@@ -1,0 +1,42 @@
+stages:
+  ingestion:
+    cmd: python src/data/ingestion.py
+    deps:
+    - src/data/ingestion.py
+    params:
+    - ingestion.test_size
+    outs:
+    - ./data/raw
+  preprocessing:
+    cmd: python src/data/preprocessing.py
+    deps:
+    - data/raw
+    - src/data/preprocessing.py
+    outs:
+    - ./data/interim
+  features:
+    cmd: python src/features/features.py
+    deps:
+    - ./data/interim
+    - src/features/features.py
+    params:
+    - features.max_features
+    outs:
+    - ./data/processed
+  model:
+    cmd: python src/model/model.py
+    deps:
+    - ./data/processed
+    - src/model/model.py
+    params:
+    - model.learning_rate
+    - model.n_estimators
+    outs:
+    - ./models/model.pkl
+  evaluation:
+    cmd: python src/model/evaluation.py
+    deps:
+    - ./models/model.pkl
+    - src/model/evaluation.py
+    metrics:
+    - metrics.json

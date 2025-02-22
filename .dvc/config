@@ -1,0 +1,4 @@
+[core]
+    remote = newremote
+['remote "newremote"']
+    url = C:\Users\aksha\AppData\Local\Temp\justAnother
